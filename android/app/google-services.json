@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "853330347753",
+    "project_id": "chat-app-dart",
+    "storage_bucket": "chat-app-dart.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:853330347753:android:85eb242be507ea42575278",
+        "android_client_info": {
+          "package_name": "com.example.chat_app_dart"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "853330347753-iue8etjfsvs7fpfcg3atujqn3js3qt25.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAaFmtUFdh3gIMzyjp_BGYZ5UGSB-g_q4o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "853330347753-iue8etjfsvs7fpfcg3atujqn3js3qt25.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

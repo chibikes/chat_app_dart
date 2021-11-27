@@ -1,0 +1,1 @@
+export 'chat_app_user.dart';
