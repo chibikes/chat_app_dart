@@ -67,27 +67,56 @@ class FriendsList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Friend List'),
+      ),
       body: BlocBuilder<MessageBloc, MessageState>(
         builder: (context, state) {
           if (state is FriendsLoaded) {
-            return ListView.builder(
-                itemCount: state.users.length,
-                itemBuilder: (context, index) {
-                  return GestureDetector(
-                    onTap: () {
-                      context.read<MessageBloc>().add(LoadChatFriendMessages(
-                          context.read<AuthenticationBloc>().state.user!,
-                          state.users[index]));
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (builder) {
-                        return MessageScreen(
-                          user: state.users[index],
-                        );
-                      }));
-                    },
-                    child: Text(state.users[index].name!),
-                  );
-                });
+            return Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: ListView.builder(
+                  itemCount: state.users.length,
+                  itemBuilder: (context, index) {
+                    return Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: GestureDetector(
+                        onTap: () {
+                          context.read<MessageBloc>().add(
+                              LoadChatFriendMessages(
+                                  context
+                                      .read<AuthenticationBloc>()
+                                      .state
+                                      .user!,
+                                  state.users[index]));
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (builder) {
+                            return MessageScreen(
+                              user: state.users[index],
+                            );
+                          }));
+                        },
+                        child: Row(
+                          children: [
+                            CircleAvatar(
+                              backgroundImage:
+                                  NetworkImage(state.users[index].photo!),
+                              foregroundImage: null,
+                            ),
+                            const SizedBox(
+                              width: 8.0,
+                            ),
+                            Text(
+                              state.users[index].name!,
+                              style:
+                                  const TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  }),
+            );
           }
           return const Text('this is nothing');
         },
@@ -100,6 +129,7 @@ class MessageScreen extends StatelessWidget {
   final User? user;
   final String myId = firebase_user.FirebaseAuth.instance.currentUser!.uid;
   final _textEditingController = TextEditingController();
+  final bool isMyMessage = true;
 
   MessageScreen({Key? key, this.user}) : super(key: key);
   @override
@@ -111,30 +141,41 @@ class MessageScreen extends StatelessWidget {
           if (state is ChatFriendMessagesLoaded) {
             return Stack(
               children: [
-                ListView.builder(
-                    itemCount: state.messages.length,
-                    itemBuilder: (context, index) {
-                      return Padding(
-                        padding: EdgeInsets.only(
-                            bottom: 8.0,
-                            left: state.messages[index].receiver.id == myId
-                                ? 0.0
-                                : 8.0),
-                        child: Container(
-                          width: 200.0,
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.only(
-                              topLeft: state.messages[index].receiver.id == myId ? Radius.zero : const Radius.circular(16.0),
-                              topRight: state.messages[index].receiver.id == myId ? const Radius.circular(16.0) : Radius.zero,
-                              bottomLeft: const Radius.circular(16.0),
-                              bottomRight: const Radius.circular(16.0),
-                            )
+                Positioned(
+                  width: 80.0,
+                  child: ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: state.messages.length,
+                      itemBuilder: (context, index) {
+                        return Padding(
+                          padding: EdgeInsets.only(
+                              bottom: 8.0,
+                              top: 8.0,
+                              left: isMyMessage ? 0.0 : 8.0),
+                          child: Container(
+                            width: 50.0,
+                            decoration: BoxDecoration(
+                                color: isMyMessage ? Colors.white : Colors.lightBlueAccent,
+                                borderRadius: BorderRadius.only(
+                                  topLeft:
+                                      !isMyMessage
+                                          ? Radius.zero
+                                          : const Radius.circular(16.0),
+                                  topRight:
+                                      !isMyMessage
+                                          ? const Radius.circular(16.0)
+                                          : Radius.zero,
+                                  bottomLeft: const Radius.circular(16.0),
+                                  bottomRight: const Radius.circular(16.0),
+                                )),
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(state.messages[index].text),
+                            ),
                           ),
-                          child: Text(state.messages[index].text),
-                        ),
-                      );
-                    }),
+                        );
+                      }),
+                ),
                 // Align(),
 
                 Positioned(
@@ -168,10 +209,10 @@ class MessageScreen extends StatelessWidget {
                           Message message = Message(
                               text: _textEditingController.text,
                               timeCreated: DateTime.now().toUtc().toString(),
-                              sender: User(
-                                id: myId,
-                                name: 'Okoh',
-                              ),
+                              sender: context
+                                  .read<AuthenticationBloc>()
+                                  .state
+                                  .user!,
                               receiver: user!,
                               receiverId: user!.id!,
                               senderId: myId,
@@ -181,7 +222,35 @@ class MessageScreen extends StatelessWidget {
                       ),
                     ],
                   ),
-                )
+                ),
+                Positioned(
+                  top: 0.0,
+                  left: 0.0,
+                  width: MediaQuery.of(context).size.width,
+                  height: 85.0,
+                  child: Container(
+                    alignment: Alignment.center,
+                    // height: 50.0,
+                    color: Colors.teal,
+                    // width: double.infinity,
+                    child: Row(
+                      children: [
+                        CircleAvatar(backgroundImage: NetworkImage(user!.photo!),),
+                        Column(
+                          children: [
+                            Text(user!.name!, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
+                            const Text('last seen today at 1.04 pm'),
+                          ],
+                        ),
+                        const Icon(Icons.video_call, color: Colors.white,),
+                        const Icon(Icons.phone, color: Colors.white,),
+
+
+
+                      ],
+                    ),
+                  ),
+                ),
               ],
             );
           } else {

@@ -14,7 +14,7 @@ class SendMessage extends MessageEvent {
   List<Object?> get props => [message];
 }
 
-class LoadFriendsMessages extends MessageEvent {
+class LoadRecentMessages extends MessageEvent {
   @override
   List<Object?> get props => [];
 

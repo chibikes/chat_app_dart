@@ -18,8 +18,8 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
 
   @override
   Stream<MessageState> mapEventToState(MessageEvent event) async* {
-    if(event is LoadFriendsMessages) {
-      yield* _mapLoadFriendsMessagesToState();
+    if(event is LoadRecentMessages) {
+      yield* _mapLoadRecentMessagesToState();
     }
     else if(event is SendMessage) {
       yield* _mapSendMessageToState(event);
@@ -43,7 +43,7 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
 
   }
 
-  Stream<MessageState>_mapLoadFriendsMessagesToState() async* {
+  Stream<MessageState>_mapLoadRecentMessagesToState() async* {
     _friendsMessagesSubscription?.cancel();
     _friendsMessagesSubscription = _messagesRepository.getFriendsMessages().listen((messages) {
       add(RetrievedMessages(messages));

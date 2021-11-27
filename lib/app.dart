@@ -30,7 +30,7 @@ class App extends StatelessWidget {
               authenticationRepository: authenticationRepository,
             ),
           ),
-          BlocProvider(create: (_) => MessageBloc(MessagesLoading(), MessagesRepository())..add(LoadFriendsMessages(),),),
+          BlocProvider(create: (_) => MessageBloc(MessagesLoading(), MessagesRepository())..add(LoadRecentMessages(),),),
         ],
         child: const AppView(),
       ),
