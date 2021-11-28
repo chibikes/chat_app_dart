@@ -20,3 +20,8 @@ class AuthenticationUserChanged extends AuthenticationEvent {
 class AuthenticationLogOutRequested extends AuthenticationEvent {
 
 }
+class UpdateUser extends AuthenticationEvent {
+  final User user;
+
+  UpdateUser(this.user);
+}

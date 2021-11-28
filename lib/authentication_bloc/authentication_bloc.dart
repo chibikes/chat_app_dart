@@ -33,6 +33,9 @@ class AuthenticationBloc
     } else if (event is AuthenticationLogOutRequested) {
       unawaited(_authenticationRepository.logOut());
     }
+    else if (event is UpdateUser) {
+      yield* _mapUpdateUserToState(event);
+    }
   }
 
   @override
@@ -47,5 +50,10 @@ class AuthenticationBloc
     return user != User.empty
         ? AuthenticationState.authenticated(user)
         : const AuthenticationState.unauthenticated();
+  }
+
+  Stream<AuthenticationState> _mapUpdateUserToState(UpdateUser event) async* {
+    await _authenticationRepository.updateUser(event.user);
+    add(AuthenticationUserChanged(event.user));
   }
 }

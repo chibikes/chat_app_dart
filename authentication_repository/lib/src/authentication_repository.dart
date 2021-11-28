@@ -141,6 +141,10 @@ class AuthenticationRepository {
     });
     return user;
   }
+
+  Future<void> updateUser(User user)  {
+    return userCollection.doc(user.id).update(user.toMap());
+  }
 }
 
 extension on firebase_auth.User {
