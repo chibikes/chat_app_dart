@@ -9,9 +9,10 @@ class MessageEntity extends Equatable {
   final User sender;
   final User receiver;
   final String commonId;
+  final String imgUrl;
 
   const MessageEntity(
-      this.text, this.timeCreated, this.senderId, this.receiverId, this.sender, this.receiver, this.commonId);
+      this.text, this.timeCreated, this.senderId, this.receiverId, this.sender, this.receiver, this.commonId, this.imgUrl);
 
   Map<String, dynamic> toJson() {
     return {
@@ -33,6 +34,7 @@ class MessageEntity extends Equatable {
       User.fromMap(json['sender']),
       User.fromMap(json['receiver']),
       json['commonId'] as String,
+      json['imgUrl']  ?? '',
 
     );
   }
@@ -46,6 +48,7 @@ class MessageEntity extends Equatable {
         User.fromMap(snapshot.data()['sender']),
         User.fromMap(snapshot.data()['receiver'],),
         snapshot.data()['commonId'],
+        snapshot.data()['imgUrl'],
 
     );
   }
@@ -59,9 +62,10 @@ class MessageEntity extends Equatable {
       'sender' : sender.toMap(),
       'receiver' : receiver.toMap(),
       'commonId' : commonId,
+      'imgUrl' : imgUrl,
     };
   }
 
   @override
-  List<Object?> get props => [text, timeCreated, senderId, receiverId, sender, receiver, commonId];
+  List<Object?> get props => [text, timeCreated, senderId, receiverId, sender, receiver, commonId, imgUrl];
 }

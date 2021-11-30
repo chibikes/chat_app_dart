@@ -6,6 +6,12 @@ class FriendsStatusPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return const Text('implement build');
+    return Scaffold(
+      body: const Text('implement build'),
+      floatingActionButton: FloatingActionButton(
+          child: const Icon(Icons.upload), onPressed: () {
+
+      }),
+    );
   }
 }

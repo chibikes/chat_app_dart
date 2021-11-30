@@ -5,6 +5,13 @@ class VoiceCallsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView();
+    return Scaffold(
+      floatingActionButton: FloatingActionButton(onPressed: () {
+
+      },
+      child: const Icon(Icons.call_sharp),
+      ),
+      body: ListView(),
+    );
   }
 }

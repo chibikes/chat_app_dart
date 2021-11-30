@@ -23,6 +23,7 @@ class UsersPage extends StatelessWidget {
           title: Row(
             children: [
               const Text('ChatApp'),
+              const SizedBox(width: 180.0,),
               Align(
                 alignment: Alignment.centerRight,
                 child: Row(
@@ -55,14 +56,7 @@ class UsersPage extends StatelessWidget {
             VoiceCallsPage(),
           ],
         ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            context.read<MessageBloc>().add(GetFriends());
-            Navigator.push(context, MaterialPageRoute(builder: (context) {
-              return const FriendsList();
-            }));
-          },
-        ),
+
       ),
     );
   }

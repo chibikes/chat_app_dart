@@ -9,6 +9,7 @@ class Message {
   final User sender;
   final User receiver;
   final String commonId; /// all messages b/w user and sender has this identification
+  final String imgUrl;
 
   const Message({
     required this.commonId,
@@ -18,6 +19,7 @@ class Message {
     required this.receiverId,
     required this.sender,
     required this.receiver,
+    this.imgUrl = '',
   });
 
 
@@ -30,7 +32,8 @@ class Message {
       String? receiverId,
       User? sender,
       User? receiver,
-        String? commonId
+        String? commonId,
+        String? imgUrl,
       }) {
     return Message(
       text: text ?? this.text,
@@ -40,11 +43,12 @@ class Message {
       sender: sender ?? this.sender,
       receiver: receiver ?? this.receiver,
       commonId: commonId ?? this.commonId,
+      imgUrl: imgUrl ?? this.imgUrl,
     );
   }
 
   MessageEntity toEntity() {
-    return MessageEntity(text, timeCreated, senderId, receiverId, sender, receiver, commonId);
+    return MessageEntity(text, timeCreated, senderId, receiverId, sender, receiver, commonId, imgUrl);
   }
 
   @override
@@ -55,7 +59,8 @@ class Message {
         receiverId.hashCode ^
         sender.hashCode ^
         receiver.hashCode ^
-        commonId.hashCode;
+        commonId.hashCode ^
+        imgUrl.hashCode;
   }
 
   @override
@@ -69,7 +74,8 @@ class Message {
             receiverId == other.receiverId &&
             sender == other.sender &&
             receiver == other.receiver &&
-            commonId == other.commonId;
+            commonId == other.commonId &&
+            imgUrl == other.imgUrl;
   }
 
   static Message fromEntity(MessageEntity messageEntity) {
@@ -81,6 +87,7 @@ class Message {
         sender: messageEntity.sender,
         receiver: messageEntity.receiver,
         commonId: messageEntity.commonId,
+        imgUrl: messageEntity.imgUrl,
         );
   }
 
