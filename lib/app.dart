@@ -55,30 +55,24 @@ class _AppViewState extends State<AppView> {
     return MaterialApp(
       theme: theme,
       navigatorKey: _navigatorKey,
-      builder: (context, child) {
-        return BlocListener<AuthenticationBloc, AuthenticationState>(
-          listener: (context, state) {
-            switch (state.status) {
-              case AuthenticationStatus.authenticated:
-                _navigator!.pushAndRemoveUntil<void>(
-                  UsersPage.route(),
-                      (route) => false,
-                );
-                break;
-              case AuthenticationStatus.unauthenticated:
-                _navigator!.pushAndRemoveUntil<void>(
-                  LoginPage.route(),
-                      (route) => false,
-                );
-                break;
-              default:
-                break;
-            }
-          },
-          child: child,
-        );
+      routes: {
+        '/': (context) {
+          return Scaffold(
+            backgroundColor: const Color(0xff521c99),
+            body: BlocBuilder<AuthenticationBloc, AuthenticationState>(
+              builder: (context, state) {
+                if (state.status == AuthenticationStatus.authenticated) {
+                  return const UsersPage();
+                }
+                else {
+                  return const LoginPage();
+                }
+                return const Center(child: CircularProgressIndicator());
+              },
+            ),
+          );
+        },
       },
-      onGenerateRoute: (_) => SplashPage.route(),
     );
   }
 }
